@@ -7,7 +7,7 @@ import { TodoLoader } from '../TodoLoader';
 
 type Props = {
   todo: Todo;
-  handleDeleteTodo: (id: number) => void;
+  handleDeleteTodo: (id: number) => Promise<void>;
   handleUpdateTodo: (todo: Todo) => Promise<void>;
   loadingTodoId: number | null;
 };
@@ -32,8 +32,10 @@ export const TodoItem: React.FC<Props> = ({
     const trimmedTitleText = titleText.trim();
 
     if (!trimmedTitleText) {
-      handleDeleteTodo(id);
-      setIsSaving(false);
+      handleDeleteTodo(id)
+        .then(() => setIsEditing(false))
+        .catch(() => setIsEditing(true))
+        .finally(() => setIsSaving(false));
     } else if (trimmedTitleText !== title) {
       handleUpdateTodo({ ...todo, title: trimmedTitleText })
         .then(() => setIsEditing(false))

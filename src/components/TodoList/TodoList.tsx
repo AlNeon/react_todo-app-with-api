@@ -5,7 +5,7 @@ import { TodoItem } from '../TodoItem';
 
 type Props = {
   todos: Todo[];
-  handleDeleteTodo: (id: number) => void;
+  handleDeleteTodo: (id: number) => Promise<void>;
   handleUpdateTodo: (todo: Todo) => Promise<void>;
   loadingTodoId: number | null;
 };
